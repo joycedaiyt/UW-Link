@@ -30,8 +30,3 @@ source venv/bin/activate
 ```
 
 You can hit any of the endpoints with an HTTP client like Postman. If you have any questions, ping me.
-
-## Authentication
-There is a great guide for setting up authentication with Flask here: https://testdriven.io/blog/web-authentication-methods/
-
-I would recommend looking at the token-based authentication.
