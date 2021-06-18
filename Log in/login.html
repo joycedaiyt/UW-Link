@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Login & Sign Up Page</title>
+		<meta charset="UTF-8">
+		<meta name="description" content="This is the login and sign up page of UW Link">
+		<meta name="author" content="Joyce Dai">
+
+		<!--------------- main css ---------------->
+		<link 
+			rel="stylesheet" type="text/css" href="style.css"/>
+		<link 
+			rel="stylesheet" 
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+
+	</head>
+
+	<body>
+		<div class="panel right-active">
+
+			<!--------------- sign up ---------------->
+			<div class="panel_form signup">
+				<form action="#" class="form" id="form1">
+					<h2 class="form_title">Sign Up</h2>
+					<input type="text" placeholder="User" class="input"/>
+					<input type="email" placeholder="Email" class="input"/>
+					<input type="password" placeholder="Password" class="input">
+					<button class="btn">Sign Up</button>
+				</form>
+			</div>
+
+			<!--------------- log in ---------------->
+			<div class="panel_form login">
+				<form action="#" class="form" id="form2">
+				<h2 class="form_title">Log In</h2>
+					<input type="email" placeholder="Email" class="input"/>
+					<input type="password" placeholder="Password" class="input">
+					<a href="#" class="link">Forgot your password?</a>
+					<button class="btn">Log In</button>
+				</form>
+			</div>
+
+			<!--------------- panel layers --------------->
+			<div class="panel_layer">
+				<div class="overlay">
+					<div class="layer overlay-left">
+						<button class="btn" id="login">Log In</button>
+					</div>
+					<div class="layer overlay-right">
+						<button class="btn" id="signup">Sign Up</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="./script.js"></script>
+		
+	</body>
+</html>
