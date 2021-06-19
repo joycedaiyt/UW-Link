@@ -50,5 +50,3 @@ To reactivate your virtualenv:
 ```python
 source venv/bin/activate
 ```
-
-You can hit any of the endpoints with an HTTP client like Postman. If you have any questions, ping me.
