@@ -77,5 +77,5 @@ def create():
             created_at=datetime.datetime.now())
         event.save()
         flash('Event created successfully!')
-        return redirect(url_for('.login'))
+        return redirect(url_for('.login')) #to be changed to homepage
     return render_template('create.html', form=form)
