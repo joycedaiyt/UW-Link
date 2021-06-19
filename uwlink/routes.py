@@ -67,11 +67,12 @@ def login():
 def create():
     form = EventForm()
     if form.validate_on_submit():
+        user = User.objects.get(id=current_user.id)
         event = Event(
             name=form.name.data,
             description=form.description.data,
             time=form.time.data,
-            creator=current_user,
+            creator=user.username,
             participants=[],
             created_at=datetime.datetime.now())
         event.save()
