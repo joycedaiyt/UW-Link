@@ -1,13 +1,15 @@
 from flask_wtf import FlaskForm
 from uwlink.models import User
 from mongoengine import DoesNotExist
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, Length, Regexp, EqualTo, ValidationError, Email
+
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(1, 64)])
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Log In')
+
 
 class SignupForm(FlaskForm):
     username = StringField('Username', validators=[
@@ -29,3 +31,10 @@ class SignupForm(FlaskForm):
                 raise ValidationError('Username already in use.')
         except DoesNotExist:
             pass
+
+
+class EventForm(FlaskForm):
+    name = StringField('Event Name', validators=[DataRequired()])
+    description = TextAreaField('Event Description', validators=[DataRequired()])
+    time = StringField()
+    submit = SubmitField('Post Event')

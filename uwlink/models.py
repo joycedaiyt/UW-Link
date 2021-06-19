@@ -26,11 +26,29 @@ class User(db.Document):
         return {
             "owner_id": str(self.id),
             "username": self.username,
-            "email":self.email,
+            "email": self.email,
             "events_joined": self.events_joined,
             "joined_at": self.joined_at
         }
 
+
+class Event(db.Document):
+    name = db.StringField()
+    description = db.StringField()
+    time = db.StringField()
+    creator = db.stringField()
+    participants = db.ListField(db.StringField())
+    created_at = db.DateTimeField()
+
+    def to_dict(self):
+        return {
+            "event_id": str(self.id),
+            "name": self.name,
+            "description": self.description,
+            "creator": self.creator,
+            "participants": self.participants,
+            "created_at": self.created_at
+        }
 
 # class Pet(db.Document):
 #     name = db.StringField()

@@ -4,8 +4,8 @@ from flask import Blueprint, jsonify, request, render_template, flash, redirect,
 from flask_login import UserMixin, current_user, login_required, login_user
 from mongoengine.errors import DoesNotExist
 from uwlink import login_manager
-from uwlink.forms import LoginForm, SignupForm
-from uwlink.models import User
+from uwlink.forms import LoginForm, SignupForm, EventForm
+from uwlink.models import User, Event
 from werkzeug.security import check_password_hash, generate_password_hash
 
 
@@ -46,6 +46,7 @@ def signup():
         return redirect(url_for('.login'))
     return render_template('signup.html', form=form)
 
+
 @routes.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -59,3 +60,21 @@ def login():
         except DoesNotExist:
             pass
     return render_template('login.html', form=form)
+
+
+@routes.route('/create-an-event', methods=['GET', 'POST'])
+@login_required
+def create():
+    form = EventForm()
+    if form.validate_on_submit():
+        event = Event(
+            name=form.name.data,
+            description=form.description.data,
+            time=form.time.data,
+            creator=current_user,
+            participants=[],
+            created_at=datetime.datetime.now())
+        event.save()
+        flash('Event created successfully!')
+        return redirect(url_for('.login'))
+    return render_template('create.html', form=form)
