@@ -55,16 +55,3 @@ class Event(db.Document):
             "participants": self.participants,
             "created_at": self.created_at
         }
-
-# class Pet(db.Document):
-#     name = db.StringField()
-#     type = db.StringField()
-#     owner_id = db.StringField()
-#
-#     def to_dict(self):
-#         return {
-#             "pet_id": str(self.id),
-#             "name": self.name,
-#             "type": self.type,
-#             "owner_id": self.owner_id
-#         }
