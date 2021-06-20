@@ -39,6 +39,7 @@ def signup():
         user = User(username=form.username.data,
                     email=form.email.data,
                     events_joined=[],
+                    events_created=[],
                     joined_at=datetime.datetime.now(),
                     hashed_password=generate_password_hash(form.password.data))
         user.save()
@@ -62,7 +63,7 @@ def login():
     return render_template('login.html', form=form)
 
 
-@routes.route('/create-an-event', methods=['GET', 'POST'])
+@routes.route('/event', methods=['GET', 'POST'])
 @login_required
 def create():
     form = EventForm()
@@ -76,6 +77,8 @@ def create():
             participants=[],
             created_at=datetime.datetime.now())
         event.save()
+        user.events_created.append(str(event.id))
+        user.save()
         flash('Event created successfully!')
         return redirect(url_for('.login')) #to be changed to homepage
     return render_template('create.html', form=form)

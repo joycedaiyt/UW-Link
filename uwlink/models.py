@@ -16,7 +16,8 @@ class User(db.Document):
     # https://docs.mongodb.com/manual/core/index-unique/
     username = db.StringField(unique=True)
     email = db.StringField(unique=True)
-    events_joined = db.ListField(db.StringField())    #Includes events created
+    events_joined = db.ListField(db.StringField())
+    events_created = db.ListField(db.StringField())
     joined_at = db.DateTimeField()
 
     # No need to include this in to_dict
@@ -28,6 +29,7 @@ class User(db.Document):
             "username": self.username,
             "email": self.email,
             "events_joined": self.events_joined,
+            "events_created": self.events_created,
             "joined_at": self.joined_at
         }
 
