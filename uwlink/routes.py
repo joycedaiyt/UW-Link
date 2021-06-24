@@ -82,3 +82,10 @@ def create():
         flash('Event created successfully!')
         return redirect(url_for('.login')) #to be changed to homepage
     return render_template('create.html', form=form)
+
+
+@routes.route('/feed', methods=['GET'])
+@login_required
+def cards():
+    event_list = list(Event.objects)
+    return render_template('cards-page.html', event_list=event_list)
