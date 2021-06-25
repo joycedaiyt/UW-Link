@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 
 from flask import Blueprint, jsonify, request, render_template, flash, redirect, url_for
 from flask_login import UserMixin, current_user, login_required, login_user
@@ -40,7 +40,7 @@ def signup():
                     email=form.email.data,
                     events_joined=[],
                     events_created=[],
-                    joined_at=datetime.datetime.now(),
+                    joined_at=datetime.now(),
                     hashed_password=generate_password_hash(form.password.data))
         user.save()
         flash('You have been signed up!')
@@ -69,18 +69,21 @@ def create():
     form = EventForm()
     if form.validate_on_submit():
         user = User.objects.get(id=current_user.id)
+        form_date = str(form.date.data)
+        form_time = str(form.time.data)
+        time = datetime.strptime(form_date + form_time, '%Y-%m-%d%H:%M:%S')
         event = Event(
             name=form.name.data,
             description=form.description.data,
-            time=form.time.data,
+            time=time,
             creator=user.username,
             participants=[],
-            created_at=datetime.datetime.now())
+            created_at=datetime.now())
         event.save()
         user.events_created.append(str(event.id))
         user.save()
         flash('Event created successfully!')
-        return redirect(url_for('.login')) #to be changed to homepage
+        return redirect(url_for('.cards')) #to be changed to homepage
     return render_template('create.html', form=form)
 
 

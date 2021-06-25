@@ -38,8 +38,6 @@ class Event(db.Document):
     name = db.StringField()
     description = db.StringField()
     time = db.DateTimeField()
-    #date = db.DateField()
-    #time = db.TimeField()
     creator = db.StringField()
     participants = db.ListField(db.StringField())
     created_at = db.DateTimeField()
@@ -49,7 +47,7 @@ class Event(db.Document):
             "event_id": str(self.id),
             "name": self.name,
             "description": self.description,
-            #"date": self.date,
+            "date": self.date,
             "time": self.time,
             "creator": self.creator,
             "participants": self.participants,

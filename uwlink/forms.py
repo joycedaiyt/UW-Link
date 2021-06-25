@@ -4,7 +4,6 @@ from mongoengine import DoesNotExist
 from wtforms import StringField, PasswordField, SubmitField, TextAreaField, DateTimeField, DateField, TimeField
 from wtforms.validators import DataRequired, Length, Regexp, EqualTo, ValidationError, Email
 
-
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(1, 64)])
     password = PasswordField('Password', validators=[DataRequired()])
@@ -36,7 +35,6 @@ class SignupForm(FlaskForm):
 class EventForm(FlaskForm):
     name = StringField('Event Name', validators=[DataRequired()])
     description = TextAreaField('Event Description', validators=[DataRequired()])
-    time = DateTimeField('time', format='%Y-%m-%d %H:%M')
-    #date = DateField('Date', format='%Y-%m-%d')
-    #time = TimeField('Time', format='%H:%M')
+    date = DateField('Date (YYYY-MM-DD)', format='%Y-%m-%d')
+    time = TimeField('Time (HH:MM)', format='%H:%M')
     submit = SubmitField('Post Event')
