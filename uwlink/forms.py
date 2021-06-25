@@ -4,6 +4,7 @@ from mongoengine import DoesNotExist
 from wtforms import StringField, PasswordField, SubmitField, TextAreaField, DateTimeField, DateField, TimeField
 from wtforms.validators import DataRequired, Length, Regexp, EqualTo, ValidationError, Email
 
+
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(1, 64)])
     password = PasswordField('Password', validators=[DataRequired()])

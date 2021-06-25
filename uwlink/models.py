@@ -47,7 +47,6 @@ class Event(db.Document):
             "event_id": str(self.id),
             "name": self.name,
             "description": self.description,
-            "date": self.date,
             "time": self.time,
             "creator": self.creator,
             "participants": self.participants,
