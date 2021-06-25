@@ -37,6 +37,7 @@ class User(db.Document):
 class Event(db.Document):
     name = db.StringField()
     description = db.StringField()
+    tags = db.ListField(db.StringField())
     time = db.DateTimeField()
     creator = db.StringField()
     participants = db.ListField(db.StringField())
@@ -51,4 +52,16 @@ class Event(db.Document):
             "creator": self.creator,
             "participants": self.participants,
             "created_at": self.created_at
+        }
+
+
+class Tag(db.Document):
+    name = db.StringField()
+    events = db.ListField(db.StringField())
+
+    def to_dict(self):
+        return {
+        "tag_id": str(self.id),
+        "name": self.name,
+        "events": self.events
         }

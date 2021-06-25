@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from uwlink.models import User
+from uwlink.models import User, Event
 from mongoengine import DoesNotExist
 from wtforms import StringField, PasswordField, SubmitField, TextAreaField, DateTimeField, DateField, TimeField
 from wtforms.validators import DataRequired, Length, Regexp, EqualTo, ValidationError, Email
