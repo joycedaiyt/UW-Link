@@ -36,6 +36,7 @@ class SignupForm(FlaskForm):
 class EventForm(FlaskForm):
     name = StringField('Event Name', validators=[DataRequired()])
     description = TextAreaField('Event Description', validators=[DataRequired()])
+    tags = StringField('Tags (separate with spaces)')
     date = DateField('Date (YYYY-MM-DD)', format='%Y-%m-%d')
     time = TimeField('Time (HH:MM)', format='%H:%M')
     submit = SubmitField('Post Event')

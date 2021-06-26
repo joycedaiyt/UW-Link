@@ -72,15 +72,15 @@ def create():
         form_date = str(form.date.data)
         form_time = str(form.time.data)
         time = datetime.strptime(form_date + form_time, '%Y-%m-%d%H:%M:%S')
-        content = form.description.data
+        content = form.tags.data
         tags = []
         for word in content.split():
-            if word.startswith("#") and word not in tags:
-                tags.append(word[1:])
+            if word not in tags:
+                tags.append(word)
         event = Event(
             name=form.name.data,
             description=form.description.data,
-            tags = tags,
+            tags=tags,
             time=time,
             creator=user.username,
             participants=[],
@@ -91,11 +91,9 @@ def create():
         for tag in tags:
             try:
                 tag = Tag.objects.get(name=tag)
-                tag.events.append(str(event.id))
             except DoesNotExist:
                 tag = Tag(name=tag, events=[])
-                tag.events.append(str(event.id))
-            #tag.events.append(str(event.id))
+            tag.events.append(str(event.id))
             tag.save()
         flash('Event created successfully!')
         return redirect(url_for('.cards')) #to be changed to homepage
