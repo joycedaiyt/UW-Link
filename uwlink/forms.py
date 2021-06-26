@@ -40,3 +40,7 @@ class EventForm(FlaskForm):
     date = DateField('Date (YYYY-MM-DD)', format='%Y-%m-%d')
     time = TimeField('Time (HH:MM)', format='%H:%M')
     submit = SubmitField('Post Event')
+
+class SearchForm(FlaskForm):
+    tags = StringField('Tags', validators=[DataRequired()])
+    submit = SubmitField('Search')

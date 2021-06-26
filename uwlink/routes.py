@@ -4,10 +4,10 @@ from flask import Blueprint, jsonify, request, render_template, flash, redirect,
 from flask_login import UserMixin, current_user, login_required, login_user
 from mongoengine.errors import DoesNotExist
 from uwlink import login_manager
-from uwlink.forms import LoginForm, SignupForm, EventForm
+from uwlink.forms import LoginForm, SignupForm, EventForm, SearchForm
 from uwlink.models import User, Event, Tag
 from werkzeug.security import check_password_hash, generate_password_hash
-
+from bson.objectid import ObjectId
 
 # In Flask, a blueprint is just a group of related routes (the functions below), it helps organize your code
 routes = Blueprint('api', __name__)
@@ -104,4 +104,35 @@ def create():
 @login_required
 def cards():
     event_list = list(Event.objects)
+    return render_template('cards-page.html', event_list=event_list)
+
+
+@routes.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        content = form.tags.data
+        return redirect(url_for('.result', content=content))
+    return render_template('search.html', form=form)
+
+                
+@routes.route('/result/<content>', methods=['GET'])
+@login_required
+def result(content):
+    tags = []
+    for tag in content.split():
+        if tag not in tags:
+            tags.append(tag)
+    event_list = []
+    for tag in tags:
+        try:
+            ttag = Tag.objects.get(name=tag)
+            events = ttag.events
+            for event_id in events:
+                event = Event.objects.get(id=ObjectId(event_id))
+                if event not in event_list:
+                    event_list.append(event)
+        except DoesNotExist:
+            pass
     return render_template('cards-page.html', event_list=event_list)
