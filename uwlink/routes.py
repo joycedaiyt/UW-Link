@@ -135,4 +135,4 @@ def result(content):
                     event_list.append(event)
         except DoesNotExist:
             pass
-    return render_template('cards-page.html', event_list=event_list)
+    return render_template('result.html', event_list=event_list)

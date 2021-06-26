@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>Search Results</h1>
+</div>
+<div class="feed">
+  {% for event in event_list %}
+  <div>
+    <h2 class="name">
+      {{event.name}}
+    </h2>
+    <div class="description">
+      {{event.description}}
+    </div>
+    <div class="time">
+      Time: {{event.time}}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
