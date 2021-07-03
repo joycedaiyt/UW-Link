@@ -36,6 +36,9 @@ def user_loader(user_id):
 def signup():
     form = request.form
     if request.method == 'POST':
+        
+
+
         user = User(username=form.get("signupUser"),
                     email=form.get("signupEmail"),
                     events_joined=[],

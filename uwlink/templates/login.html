@@ -22,10 +22,16 @@
 			<div class="panel_form signup">
 				<form action="{{ url_for('api.signup') }}" class="form" id="form1" method="post">
 					<h2 class="form_title">Sign Up</h2>
-					<input type="text" placeholder="User" class="input" name="signupUser"/>
-					<input type="email" placeholder="Email" class="input" name="signupEmail"/>
-					<input type="password" placeholder="Password" class="input" name="signupPassword">
-					<button type="submit" class="btn" value="Submit" form="form1">Submit</button>
+					<input type="text" placeholder="User" class="input" name="signupUser" 
+						   pattern="[a-zA-Z0-9._].{1,64}" 
+						   title="Usernames must have only letters, numbers, dots or underscores"/>
+					<input type="email" placeholder="Email" class="input" name="signupEmail" 
+						   pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" 
+						   title="Please enter a valid email address"/>
+					<input type="password" placeholder="Password" class="input" name="signupPassword" 
+						   pattern="(?=.*\d)(?=.*[a-zA-Z]).{6,}" 
+						   title="Password must contain at least one  number and one letter, and at least 6 or more characters">
+					<button type="submit" class="btn" form="form1">Sign Up</button>
 				</form>
 			</div>
 
@@ -33,7 +39,9 @@
 			<div class="panel_form login">
 				<form action="{{ url_for('api.login') }}" class="form" id="form2" method="post">
 				<h2 class="form_title">Log In</h2>
-					<input type="text" placeholder="User" class="input" name="loginUser" />
+					<input type="text" placeholder="User" class="input" name="loginUser"
+					       pattern="[a-zA-Z0-9._].{1,64}" 
+						   title="Usernames must have only letters, numbers, dots or underscores"/> />
 					<input type="password" placeholder="Password" class="input" name="loginPassword">
 					<a href="#" class="link">Forgot your password?</a>
 					<button type="submit" class="btn" form="form2" >Log In</button>
