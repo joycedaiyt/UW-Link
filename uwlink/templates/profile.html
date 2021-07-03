@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="content-section">
+      <div class="media">
+        <div class="media-body">
+          <h2 class="account-heading">{{ name }}</h2>
+          <p class="text-secondary">{{ email }}</p >
+        </div>
+      </div>
+        <form method="POST" action="" enctype="multipart/form-data">
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Account Info</legend>
+                <div class = "events_created"> 
+                  <div class = "event_title"> 
+                    <h4> Events Created</h4>
+                  </div>
+                  {% for event in events_created %}
+                  <div>
+                    {{event.name}}
+                  </div>
+                  {% endfor %}
+                </div>
+              <div class = "events_joined"> 
+                <div class = "event_title"> 
+                  <h4> Events Joined</h4>
+                </div>
+                {% for event in events_joined %}
+                <div>
+                  {{event.name}}
+                </div>
+                {% endfor %}
+              </div>
+            </fieldset>
+        </form>
+    </div>
+{% endblock content %}
