@@ -23,6 +23,7 @@ login_manager = LoginManager()
 
 def create_app():
     app = Flask(__name__)
+    app.debug = True
 
     # Configure Flask to connect to our MongoDB cluster
     #
