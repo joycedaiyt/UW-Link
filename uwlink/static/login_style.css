@@ -54,7 +54,9 @@ body {
 	height: var(--max-height);
 	max-width: var(--max-width);
 	overflow: hidden;
-	position: relative;
+	position: fixed;
+	bottom: 210px;
+	right: 370px;
 	width: 100%;
 }
 
@@ -202,4 +204,12 @@ body {
     padding: 0.9rem 0.9rem;
     margin: 0.5rem 0;
     width: 100%;
+}
+
+.flash_message {
+	color: var(--white);
+	font-size: 25px;
+	font-weight: bold;
+	position: relative;
+	top: 230px;
 }

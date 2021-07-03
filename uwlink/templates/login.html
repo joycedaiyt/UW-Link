@@ -62,10 +62,11 @@
 		</div>
 
 		<script src="{{url_for('static', filename='script.js')}}"></script>
-		
-  		{% for message in get_flashed_messages() %}
-    		{{ message }}
-  		{% endfor %}
 
+		<div class="flash_message">
+  			{% for message in get_flashed_messages() %}
+    			{{ message }}
+  			{% endfor %} 
+  		</div>
 	</body>
 </html>

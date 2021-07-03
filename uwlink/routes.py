@@ -38,7 +38,8 @@ def signup():
     if request.method == 'POST':
         try:
             if User.objects.get(username=form.get("signupUser")):
-                return "User name already exist"
+                flash('Username already exist')
+                return redirect(url_for('.login'))
         except DoesNotExist:
             pass
         user = User(username=form.get("signupUser"),
@@ -62,7 +63,8 @@ def login():
             if check_password_hash(user.hashed_password, form.get("loginPassword")):
                 user = LoginUser(user)
                 login_user(user)
-                return "logged in"
+                flash('You have logged in!')
+                return redirect(url_for('.cards')) #to be changed to homepage
         except DoesNotExist:
             pass
     return render_template('login.html', form=form)
