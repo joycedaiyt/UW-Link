@@ -36,9 +36,11 @@ def user_loader(user_id):
 def signup():
     form = request.form
     if request.method == 'POST':
-        
-
-
+        try:
+            if User.objects.get(username=form.get("signupUser")):
+                return "User name already exist"
+        except DoesNotExist:
+            pass
         user = User(username=form.get("signupUser"),
                     email=form.get("signupEmail"),
                     events_joined=[],

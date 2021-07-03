@@ -41,7 +41,7 @@
 				<h2 class="form_title">Log In</h2>
 					<input type="text" placeholder="User" class="input" name="loginUser"
 					       pattern="[a-zA-Z0-9._].{1,64}" 
-						   title="Usernames must have only letters, numbers, dots or underscores"/> />
+						   title="Usernames must have only letters, numbers, dots or underscores"/>
 					<input type="password" placeholder="Password" class="input" name="loginPassword">
 					<a href="#" class="link">Forgot your password?</a>
 					<button type="submit" class="btn" form="form2" >Log In</button>
@@ -62,6 +62,10 @@
 		</div>
 
 		<script src="{{url_for('static', filename='script.js')}}"></script>
+		
+  		{% for message in get_flashed_messages() %}
+    		{{ message }}
+  		{% endfor %}
 
 	</body>
 </html>
