@@ -4,7 +4,7 @@ from flask import Blueprint, jsonify, request, render_template, flash, redirect,
 from flask_login import UserMixin, current_user, login_required, login_user
 from mongoengine.errors import DoesNotExist
 from uwlink import login_manager
-from uwlink.forms import LoginForm, SignupForm, EventForm, SearchForm
+from uwlink.forms import EventForm, SearchForm
 from uwlink.models import User, Event, Tag
 from werkzeug.security import check_password_hash, generate_password_hash
 from bson.objectid import ObjectId
@@ -34,27 +34,27 @@ def user_loader(user_id):
 # https://en.wikipedia.org/wiki/Cryptographic_hash_function#Password_verification
 @routes.route('/signup', methods=['GET', 'POST'])
 def signup():
-    form = SignupForm()
-    if form.validate_on_submit():
-        user = User(username=form.username.data,
-                    email=form.email.data,
+    form = request.form
+    if request.method == 'POST':
+        user = User(username=form.get("signupUser"),
+                    email=form.get("signupEmail"),
                     events_joined=[],
                     events_created=[],
                     joined_at=datetime.now(),
-                    hashed_password=generate_password_hash(form.password.data))
+                    hashed_password=generate_password_hash(form.get("signupPassword")))
         user.save()
         flash('You have been signed up!')
         return redirect(url_for('.login'))
-    return render_template('signup.html', form=form)
+    return render_template('login.html', form=form)
 
 
 @routes.route('/login', methods=['GET', 'POST'])
 def login():
-    form = LoginForm()
-    if form.validate_on_submit():
+    form = request.form
+    if request.method == 'POST':
         try:
-            user = User.objects.get(username=form.username.data)
-            if check_password_hash(user.hashed_password, form.password.data):
+            user = User.objects.get(username=form.get("loginUser"))
+            if check_password_hash(user.hashed_password, form.get("loginPassword")):
                 user = LoginUser(user)
                 login_user(user)
                 return "logged in"

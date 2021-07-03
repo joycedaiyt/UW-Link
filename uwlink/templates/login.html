@@ -1,15 +1,59 @@
-{% extends "base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Login & Sign Up Page</title>
+		<meta charset="UTF-8">
+		<meta name="description" content="This is the login and sign up page of UW Link">
+		<meta name="author" content="Joyce Dai">
 
-{% block title %}Login to UW Link{% endblock %}
+		<!--------------- main css ---------------->
+		<link 
+			rel="stylesheet" type="text/css" href="{{ url_for('static', filename='login_style.css') }}"/>
+		<link 
+			rel="stylesheet" 
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 
-{% block page_content %}
-<div class="page-header">
-    <h1>Login</h1>
-</div>
-<div class="col-md-4">
-    {{ wtf.quick_form(form) }}
-    <br>
-    <p>New user? <a href="{{ url_for('.signup') }}">Click here to sign up</a>.</p>
-</div>
-{% endblock %}
+	</head>
+
+	<body>
+		<div class="panel right-active">
+
+			<!--------------- sign up ---------------->
+			<div class="panel_form signup">
+				<form action="{{ url_for('api.signup') }}" class="form" id="form1" method="post">
+					<h2 class="form_title">Sign Up</h2>
+					<input type="text" placeholder="User" class="input" name="signupUser"/>
+					<input type="email" placeholder="Email" class="input" name="signupEmail"/>
+					<input type="password" placeholder="Password" class="input" name="signupPassword">
+				</form>
+				<button type="submit" class="btn" form="form1">Sign Up</button>
+			</div>
+
+			<!--------------- log in ---------------->
+			<div class="panel_form login">
+				<form action="{{ url_for('api.login') }}" class="form" id="form2" method="post">
+				<h2 class="form_title">Log In</h2>
+					<input type="text" placeholder="User" class="input" name="loginUser" />
+					<input type="password" placeholder="Password" class="input" name="loginPassword">
+					<a href="#" class="link">Forgot your password?</a>
+				</form>
+				<button type="submit" class="btn" form="form2">Log In</button>
+			</div>
+
+			<!--------------- panel layers --------------->
+			<div class="panel_layer">
+				<div class="overlay">
+					<div class="layer overlay-left">
+						<button class="btn" id="login">Log In</button>
+					</div>
+					<div class="layer overlay-right">
+						<button class="btn" id="signup">Sign Up</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="{{url_for('static', filename='script.js')}}"></script>
+
+	</body>
+</html>
