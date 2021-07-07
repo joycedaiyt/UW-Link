@@ -48,7 +48,7 @@
   grid-template-columns: 50% 50%;
 }
 
-.btn {
+.feed .btn {
   background-image: linear-gradient(to left, #e66465, #9198e5);
   border-radius: 20px;
   border: 0.2px solid var(--blue-r);
@@ -66,11 +66,11 @@
   bottom: 30px;
 }
 
-.btn:active {
+.feed .btn:active {
   transform: scale(0.95);
 }
 
-.btn:focus {
+.feed .btn:focus {
   outline: none;
 }
 

@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from flask import Blueprint, jsonify, request, render_template, flash, redirect, url_for
-from flask_login import UserMixin, current_user, login_required, login_user
+from flask_login import UserMixin, current_user, login_required, login_user, logout_user
 from mongoengine.errors import DoesNotExist
 from uwlink import login_manager
 from uwlink.forms import EventForm, SearchForm
@@ -56,6 +56,8 @@ def signup():
 
 @routes.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('.feed'))
     form = request.form
     if request.method == 'POST':
         try:
@@ -64,7 +66,7 @@ def login():
                 user = LoginUser(user)
                 login_user(user)
                 flash('You have logged in!')
-                return redirect(url_for('.cards')) #to be changed to homepage
+                return redirect(url_for('.feed')) # changed to homepage
         except DoesNotExist:
             pass
     return render_template('login.html', form=form)
@@ -112,7 +114,7 @@ def create():
 @login_required
 def feed():
     event_list = list(Event.objects)
-    return render_template('cards-page.html', event_list=event_list)
+    return render_template('feed.html', event_list=event_list)
 
 
 # search events
@@ -256,3 +258,10 @@ def join():
     event.save()
     flash('Joined!')
     return redirect(url_for('.feed'))
+
+
+@routes.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('.login'))

@@ -6,7 +6,7 @@
 {{ super() }}
 <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='cards-page.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='feed.css') }}">
 {% endblock %}
 
 {% block navbar %}
@@ -19,13 +19,13 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="https://www.google.ca">UW Link</a>
+      <a class="navbar-brand" href="{{ url_for('.feed') }}">UW Link</a>
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li><a href="https://www.google.ca">Home</a></li>
+        <li><a href="{{ url_for('.feed') }}">Home</a></li>
         {% if current_user.is_authenticated %}
-        <li><a href="https://www.google.ca">Profile</a></li>
+        <li><a href="{{ url_for('.profile') }}">Profile</a></li>
         {% endif %}
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -37,7 +37,7 @@
           <ul class="dropdown-menu">
             <li><a href="https://www.google.ca">Change Password</a></li>
             <li><a href="https://www.google.ca">Change Email</a></li>
-            <li><a href="https://www.google.ca">Log Out</a></li>
+            <li><a href="{{ url_for('.logout') }}">Log Out</a></li>
           </ul>
         </li>
         {% else %}
