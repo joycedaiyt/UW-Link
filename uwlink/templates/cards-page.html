@@ -35,7 +35,12 @@
         No participants. Be the first to join this event!
       {% endif %}
     </div>
-    <button class="btn">Join</button>
+    <form action="{{ url_for('api.join') }}" method="post">
+      {% set event_id = event.id %}
+      <input type="hidden" name="event_id" value={{ event_id|safe }}>
+      <input class="btn" type="submit" name="form_data" value="Join">
+    </form>
+
   </div>
   {% endfor %}
 </div>

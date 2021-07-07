@@ -104,13 +104,13 @@ def create():
             tag.events.append(str(event.id))
             tag.save()
         flash('Event created successfully!')
-        return redirect(url_for('.cards')) #to be changed to homepage
+        return redirect(url_for('.feed')) #to be changed to homepage
     return render_template('create.html', form=form)
 
 
 @routes.route('/feed', methods=['GET'])
 @login_required
-def cards():
+def feed():
     event_list = list(Event.objects)
     return render_template('cards-page.html', event_list=event_list)
 
@@ -235,3 +235,24 @@ def profile():
                            join = current_user.user.joined_at,
                            events_created = events_created,
                            events_joined = events_joined)
+
+
+@routes.route('/join', methods=['POST'])
+@login_required
+def join():
+    event_id = request.form.get("event_id")
+    event = Event.objects.get(id=event_id)
+    user = User.objects.get(id=current_user.id)
+    if user.username == event.creator:
+        flash('You are the creator of this event.')
+        return redirect(url_for('.feed'))
+    for participant in event.participants:
+        if participant == user.username:
+            flash('You have already joined this event.')
+            return redirect(url_for('.feed'))
+    user.events_joined.append(str(event.id))
+    user.save()
+    event.participants.append(str(user.username))
+    event.save()
+    flash('Joined!')
+    return redirect(url_for('.feed'))
