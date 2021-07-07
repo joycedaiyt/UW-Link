@@ -135,15 +135,12 @@ def search():
 @routes.route('/result/<data>', methods=['GET'])
 @login_required
 def result(data):
-    print(data)
     content = data.strip('][').split(', ')
-    print(content)
     fields = [None] * len(content)
     for i in range(0,2):
         fields[i] = content[i][1:len(content[i])-1]
     for i in range(2,len(content)):
         fields[i] = content[i]
-    print(fields)
     event_list = []
     if fields[0] == "" and fields[1] == "":
         event_list = list(Event.objects)
