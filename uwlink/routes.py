@@ -114,7 +114,7 @@ def create():
 @login_required
 def feed():
     event_list = list(Event.objects)
-    return render_template('feed.html', event_list=event_list)
+    return render_template('feed.html', event_list=event_list, results=False)
 
 
 # search events
@@ -218,7 +218,7 @@ def result(data):
                 break
         event_list = newlist
     event_list.reverse()
-    return render_template('result.html', event_list=event_list)
+    return render_template('feed.html', event_list=event_list, results=True)
 
 
 @routes.route('/profile', methods=['GET'])
