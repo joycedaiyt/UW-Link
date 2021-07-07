@@ -70,6 +70,7 @@ def login():
     return render_template('login.html', form=form)
 
 
+# creates a new event
 @routes.route('/event', methods=['GET', 'POST'])
 @login_required
 def create():
@@ -114,35 +115,112 @@ def cards():
     return render_template('cards-page.html', event_list=event_list)
 
 
+# search events
 @routes.route('/search', methods=['GET', 'POST'])
 @login_required
 def search():
     form = SearchForm()
     if form.validate_on_submit():
-        content = form.tags.data
-        return redirect(url_for('.result', content=content))
+        data = [None] * 5
+        data[0] = form.name.data
+        data[1] = form.tags.data
+        data[2] = form.date_from.data
+        data[3] = form.date_to.data
+        data[4] = form.display_past_events.data
+        return redirect(url_for('.result', data=data))
     return render_template('search.html', form=form)
 
-                
-@routes.route('/result/<content>', methods=['GET'])
+
+# display search results for the given data      
+@routes.route('/result/<data>', methods=['GET'])
 @login_required
-def result(content):
-    tags = []
-    for tag in content.split():
-        if tag not in tags:
-            tags.append(tag)
+def result(data):
+    print(data)
+    content = data.strip('][').split(', ')
+    print(content)
+    fields = [None] * len(content)
+    for i in range(0,2):
+        fields[i] = content[i][1:len(content[i])-1]
+    for i in range(2,len(content)):
+        fields[i] = content[i]
+    print(fields)
     event_list = []
-    for tag in tags:
-        try:
-            ttag = Tag.objects.get(name=tag)
-            events = ttag.events
-            for event_id in events:
-                event = Event.objects.get(id=ObjectId(event_id))
-                if event not in event_list:
+    if fields[0] == "" and fields[1] == "":
+        event_list = list(Event.objects)
+    else:
+        search_names = fields[0]
+        search_tags = fields[1]
+        # and search for event names (>= 2/3 matching)
+        names = []
+        for name in search_names.split():
+            if name not in names:
+                names.append(name)
+        if len(names) > 0:
+            for event in list(Event.objects):
+                count = 0
+                for name in names:
+                    if name in event.name:
+                        count += 1
+                if count >= 2/3 * len(names):
                     event_list.append(event)
-        except DoesNotExist:
-            pass
+        # or search for event tags
+        tags = []
+        for tag in search_tags.split():
+            if tag not in tags:
+                tags.append(tag)
+        for tag in tags:
+            try:
+                TAG = Tag.objects.get(name=tag)
+                events = TAG.events
+                for event_id in events:
+                    event = Event.objects.get(id=ObjectId(event_id))
+                    if event not in event_list:
+                        event_list.append(event)
+            except DoesNotExist:
+                pass
+    # filters by time
+    event_list.sort(key=lambda event: event.time, reverse=True)
+    idx = 2
+    if fields[idx] != 'None':
+        search_time = fields[idx][14:] + '-' + fields[idx+1] + '-' + fields[idx+2][0:len(fields[idx+2])-1]
+        time_from = datetime.strptime(search_time, '%Y-%m-%d')
+        newlist = []
+        for event in event_list:
+            if event.time.date() >= time_from.date():
+                newlist.append(event)
+            else:
+                break
+        event_list = newlist
+        idx += 3
+    else:
+        idx += 1
+    if fields[idx] != 'None':
+        event_list.reverse()
+        search_time = fields[idx][14:] + '-' + fields[idx+1] + '-' + fields[idx+2][0:len(fields[idx+2])-1]
+        time_to = datetime.strptime(search_time, '%Y-%m-%d')
+        newlist = []
+        for event in event_list:
+            if event.time.date() <= time_to.date():
+                newlist.append(event)
+            else:
+                break
+        event_list = newlist
+        idx += 3
+        event_list.reverse()
+    else:
+        idx += 1
+    if fields[idx] == 'False':
+        time = datetime.now()
+        newlist = []
+        for event in event_list:
+            if event.time >= time:
+                newlist.append(event)
+            else:
+                break
+        event_list = newlist
+    event_list.reverse()
     return render_template('result.html', event_list=event_list)
+
 
 @routes.route('/profile', methods=['GET'])
 @login_required

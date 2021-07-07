@@ -1,8 +1,8 @@
 from flask_wtf import FlaskForm
 from uwlink.models import User, Event
 from mongoengine import DoesNotExist
-from wtforms import StringField, PasswordField, SubmitField, TextAreaField, DateTimeField, DateField, TimeField
-from wtforms.validators import DataRequired, Length, Regexp, EqualTo, ValidationError, Email
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField, DateTimeField, DateField, TimeField, BooleanField
+from wtforms.validators import DataRequired, Length, Regexp, EqualTo, ValidationError, Email, Optional
 
 class EventForm(FlaskForm):
     name = StringField('Event Name', validators=[DataRequired()])
@@ -13,5 +13,9 @@ class EventForm(FlaskForm):
     submit = SubmitField('Post Event')
 
 class SearchForm(FlaskForm):
-    tags = StringField('Tags', validators=[DataRequired()])
+    name = StringField('Event Name')
+    tags = StringField('Tags')
+    date_from = DateField('From (YYYY-MM-DD)', validators=[Optional()])
+    date_to = DateField('To (YYYY-MM-DD)', validators=[Optional()])
+    display_past_events = BooleanField('Display Past Events?')
     submit = SubmitField('Search')
