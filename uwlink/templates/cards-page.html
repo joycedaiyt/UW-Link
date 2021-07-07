@@ -7,10 +7,35 @@
 <div class="page-header">
     <h1>Events</h1>
 </div>
+
 <div class="feed">
-  {% for event in event_list %}
-  <div>
-    {{event.name}}
+  {% for event in event_list[::-1] %}
+  <div class="event-card">
+    <h2 class="name">
+      {{event.name}}
+    </h2>
+    <p class="description">
+      {{event.description}}
+    </p>
+    <div class="line">
+      <div class="time">
+        Time: {{event.time.strftime('%Y-%m-%d %H:%M')}}
+      </div>
+      <div class="creator">
+        Created by: {{event.creator}}
+      </div>
+    </div>
+    <div class="participants">
+      {% if event.participants|length > 0 %}
+        Participants:
+        {% for participant in event.participants %}
+          {{participant}}
+        {% endfor %}
+      {% else %}
+        No participants. Be the first to join this event!
+      {% endif %}
+    </div>
+    <button class="btn">Join</button>
   </div>
   {% endfor %}
 </div>
