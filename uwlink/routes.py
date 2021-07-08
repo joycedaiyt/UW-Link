@@ -114,7 +114,8 @@ def create():
 @login_required
 def feed():
     event_list = list(Event.objects)
-    return render_template('feed.html', event_list=event_list, results=False)
+    return render_template('feed.html', event_list=event_list, 
+                            results=False, user=User.objects.get(id=current_user.id))
 
 
 # search events
@@ -218,7 +219,8 @@ def result(data):
                 break
         event_list = newlist
     event_list.reverse()
-    return render_template('feed.html', event_list=event_list, results=True)
+    return render_template('feed.html', event_list=event_list,
+                            results=True, user=User.objects.get(id=current_user.id))
 
 
 @routes.route('/profile', methods=['GET'])
@@ -245,18 +247,24 @@ def join():
     event_id = request.form.get("event_id")
     event = Event.objects.get(id=event_id)
     user = User.objects.get(id=current_user.id)
-    if user.username == event.creator:
-        flash('You are the creator of this event.')
-        return redirect(url_for('.feed'))
-    for participant in event.participants:
-        if participant == user.username:
-            flash('You have already joined this event.')
-            return redirect(url_for('.feed'))
     user.events_joined.append(str(event.id))
     user.save()
     event.participants.append(str(user.username))
     event.save()
     flash('Joined!')
+    return redirect(url_for('.feed'))
+
+@routes.route('/leave', methods=['POST'])
+@login_required
+def leave():
+    event_id = request.form.get("event_id")
+    event = Event.objects.get(id=event_id)
+    user = User.objects.get(id=current_user.id)
+    user.events_joined.remove(str(event.id))
+    user.save()
+    event.participants.remove(str(user.username))
+    event.save()
+    flash('Left!')
     return redirect(url_for('.feed'))
 
 
