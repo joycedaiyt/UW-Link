@@ -54,9 +54,8 @@ body {
 	height: var(--max-height);
 	max-width: var(--max-width);
 	overflow: hidden;
-	position: fixed;
-	bottom: 210px;
-	right: 370px;
+	position: relative;
+	top: 12%;
 	width: 100%;
 }
 
@@ -211,5 +210,5 @@ body {
 	font-size: 25px;
 	font-weight: bold;
 	position: relative;
-	top: 230px;
+	margin-top: -10%;
 }
