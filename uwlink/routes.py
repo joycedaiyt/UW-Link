@@ -223,9 +223,28 @@ def result(data):
                             results=True, user=User.objects.get(id=current_user.id))
 
 
-@routes.route('/profile', methods=['GET'])
+@routes.route('/profile/<username>', methods=['GET'])
 @login_required
-def profile():
+def profile(username):
+    user = User.objects.get(username=username)
+    events_created = []
+    for event_id in user.events_created:
+        event = Event.objects.get(id=event_id)
+        events_created.append(event)
+    events_joined = []
+    for event_id in user.events_joined:
+        event = Event.objects.get(id=event_id)
+        events_joined.append(event)
+    return render_template('profile.html', name = user.username,
+                           email = user.email,
+                           join = user.joined_at,
+                           events_created = events_created,
+                           events_joined = events_joined)
+
+
+@routes.route('/account', methods=['GET'])
+@login_required
+def account():
     events_created = []
     for event_id in current_user.user.events_created:
         event = Event.objects.get(id = event_id)
@@ -253,6 +272,7 @@ def join():
     event.save()
     flash('Joined!')
     return redirect(url_for('.feed'))
+
 
 @routes.route('/leave', methods=['POST'])
 @login_required

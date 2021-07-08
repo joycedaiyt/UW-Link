@@ -33,14 +33,15 @@
             Time: {{event.time.strftime('%Y-%m-%d %H:%M')}}
           </div>
           <div class="creator">
-            Created by: {{event.creator}}
+            Created by: 
+            <a href="{{ url_for('api.profile', username=event.creator) }}">{{event.creator}}</a>
           </div>
         </div>
         <div class="participants">
           {% if event.participants|length > 0 %}
             Participants:
             {% for participant in event.participants %}
-              {{participant}}
+              <a href="{{ url_for('api.profile', username=participant) }}">{{participant}}</a>
             {% endfor %}
           {% else %}
             No participants. Be the first to join this event!
