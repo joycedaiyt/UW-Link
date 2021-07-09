@@ -42,6 +42,12 @@ def signup():
                 return redirect(url_for('.login'))
         except DoesNotExist:
             pass
+        try:
+            if User.objects.get(email=form.get("signupEmail")):
+                flash('Email already in use')
+                return redirect(url_for('.login'))
+        except DoesNotExist:
+            pass
         user = User(username=form.get("signupUser"),
                     email=form.get("signupEmail"),
                     events_joined=[],
@@ -69,6 +75,7 @@ def login():
                 return redirect(url_for('.feed'))
         except DoesNotExist:
             pass
+        flash("Incorrect username or password, please try again.")
     return render_template('login.html', form=form)
 
 
