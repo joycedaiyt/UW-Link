@@ -117,7 +117,7 @@ def create():
     return render_template('create.html', form=form)
 
 
-@routes.route('/feed', methods=['GET'])
+@routes.route('/feed/', methods=['GET'])
 @login_required
 def feed():
     page = request.args.get('page', 1, type=int)
@@ -142,8 +142,11 @@ def search():
     return render_template('search.html', form=form)
 
 
+events_per_page = 8
+
+
 # display search results for the given data      
-@routes.route('/result/<data>', methods=['GET'])
+@routes.route('/result/<data>/', methods=['GET'])
 @login_required
 def result(data):
     content = data.strip('][').split(', ')
@@ -229,16 +232,17 @@ def result(data):
     event_list.reverse()
     page = request.args.get('page', 1, type=int)
     if len(event_list) == 0:
-        return render_template('feed.html', event_list=event_list,
-                            results=True, user=User.objects.get(id=current_user.id))
+        return render_template('result.html', event_list=event_list, page=page,
+                                page_count=0, data=data, user=User.objects.get(id=current_user.id))
     pages = []
     idx = 0
     for i in range(0, len(event_list), events_per_page):
         pages.append(event_list[i:i+events_per_page])
         pages[idx].sort(key=lambda event: event.time, reverse=True)
         idx += 1
-    return render_template('feed.html', event_list=pages[page - 1],
-                            results=True, user=User.objects.get(id=current_user.id))
+    page_count = len(pages)
+    return render_template('result.html', event_list=pages[page - 1], page=page,
+                            page_count=page_count, data=data, user=User.objects.get(id=current_user.id))
 
 
 @routes.route('/profile/<username>', methods=['GET'])
