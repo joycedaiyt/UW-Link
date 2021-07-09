@@ -120,21 +120,12 @@ def create():
 events_per_page = 10
 
 
-@routes.route('/feed/', methods=['GET'])
+@routes.route('/feed', methods=['GET'])
 @login_required
 def feed():
     page = request.args.get('page', 1, type=int)
-    event_list = list(Event.objects)
-    event_list.sort(key=lambda event: event.created_at, reverse=True)
-    pages = []
-    idx = 0
-    for i in range(0, len(event_list), events_per_page):
-        pages.append(event_list[i:i+events_per_page])
-        pages[idx].sort(key=lambda event: event.created_at)
-        idx += 1
-    page_count = len(pages)
-    return render_template('feed.html', event_list=pages[page - 1], page_count=page_count,
-                            results=False, user=User.objects.get(id=current_user.id))
+    pagination = Event.objects.order_by('-created_at').paginate(page=page, per_page=8)
+    return render_template('feed.html', pagination=pagination,
 
 
 # search events
