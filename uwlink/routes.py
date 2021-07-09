@@ -117,15 +117,13 @@ def create():
     return render_template('create.html', form=form)
 
 
-events_per_page = 10
-
-
 @routes.route('/feed', methods=['GET'])
 @login_required
 def feed():
     page = request.args.get('page', 1, type=int)
     pagination = Event.objects.order_by('-created_at').paginate(page=page, per_page=8)
     return render_template('feed.html', pagination=pagination,
+                            results=False, user=User.objects.get(id=current_user.id))
 
 
 # search events
