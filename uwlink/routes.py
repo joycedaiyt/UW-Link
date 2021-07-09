@@ -132,7 +132,8 @@ def feed():
         pages.append(event_list[i:i+events_per_page])
         pages[idx].sort(key=lambda event: event.created_at)
         idx += 1
-    return render_template('feed.html', event_list=pages[page - 1], 
+    page_count = len(pages)
+    return render_template('feed.html', event_list=pages[page - 1], page_count=page_count,
                             results=False, user=User.objects.get(id=current_user.id))
 
 
