@@ -66,7 +66,7 @@ def login():
                 user = LoginUser(user)
                 login_user(user)
                 flash('You have logged in!')
-                return redirect(url_for('.feed')) # changed to homepage
+                return redirect(url_for('.feed'))
         except DoesNotExist:
             pass
     return render_template('login.html', form=form)
@@ -106,15 +106,26 @@ def create():
             tag.events.append(str(event.id))
             tag.save()
         flash('Event created successfully!')
-        return redirect(url_for('.feed')) #to be changed to homepage
+        return redirect(url_for('.feed'))
     return render_template('create.html', form=form)
+
+
+events_per_page = 10
 
 
 @routes.route('/feed', methods=['GET'])
 @login_required
 def feed():
+    page = request.args.get('page', 1, type=int)
     event_list = list(Event.objects)
-    return render_template('feed.html', event_list=event_list, 
+    event_list.sort(key=lambda event: event.created_at, reverse=True)
+    pages = []
+    idx = 0
+    for i in range(0, len(event_list), events_per_page):
+        pages.append(event_list[i:i+events_per_page])
+        pages[idx].sort(key=lambda event: event.created_at)
+        idx += 1
+    return render_template('feed.html', event_list=pages[page - 1], 
                             results=False, user=User.objects.get(id=current_user.id))
 
 
@@ -219,7 +230,17 @@ def result(data):
                 break
         event_list = newlist
     event_list.reverse()
-    return render_template('feed.html', event_list=event_list,
+    page = request.args.get('page', 1, type=int)
+    if len(event_list) == 0:
+        return render_template('feed.html', event_list=event_list,
+                            results=True, user=User.objects.get(id=current_user.id))
+    pages = []
+    idx = 0
+    for i in range(0, len(event_list), events_per_page):
+        pages.append(event_list[i:i+events_per_page])
+        pages[idx].sort(key=lambda event: event.time, reverse=True)
+        idx += 1
+    return render_template('feed.html', event_list=pages[page - 1],
                             results=True, user=User.objects.get(id=current_user.id))
 
 
