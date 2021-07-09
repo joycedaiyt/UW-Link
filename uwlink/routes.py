@@ -120,7 +120,7 @@ def create():
 events_per_page = 10
 
 
-@routes.route('/feed', methods=['GET'])
+@routes.route('/feed/', methods=['GET'])
 @login_required
 def feed():
     page = request.args.get('page', 1, type=int)
