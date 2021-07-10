@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %}Events{% endblock %}
+{% block title %}Search Results{% endblock %}
 
 {% block page_content %}
 <div class="page-header">
@@ -56,24 +56,33 @@
       {% endif %}
     </div>
   {% endfor %}
+</div>
 
-  <div class="pagination">
-    {% if page_count > 1 %}
-      {% if page > 1 %}
-        <a href="{{url_for('api.result', data=data, page=page - 1) }}" class="butn btn-outline-dark">&laquo;</a>
+<div class="page-bottom">
+  {% if page_count > 1 %}
+    <ul class="pagination">
+      {% if page > 1 %} 
+        <li><a href="{{url_for('api.result', data=data, page=page-1) }}" class="butn btn-outline-dark">&laquo;</a></li>
+      {% else %}
+        <li><a class="page-no-link disabled" href="#/" >&laquo;</a></li>
       {% endif %}
       {% for page_number in range(1, page_count + 1) %}
-        <a href="{{ url_for('api.result', data=data, page=page_number) }}">{{page_number}}</a>
+        <li><a href="{{ url_for('api.result', data=data, page=page_number) }}">{{page_number}}</a></li>
       {% endfor %}
       {% if page < page_count %}
-        <a href="{{url_for('api.result', data=data, page=page + 1) }}" class="butn btn-outline-dark">&raquo;</a>
+        <li><a href="{{url_for('api.result', data=data, page=page+1) }}" class="butn btn-outline-dark">&raquo;</a></li>
+      {% else %}
+        <li><a class="page-no-link disabled" href="#/" >&laquo;</a></li>
       {% endif %}
-    </div>
-    <p class="text-bottom">
+    </ul>
+    <div class="text-bottom">
       Showing page {{ page }} of {{ page_count }}
-    </p>
+    </div>
   {% else %}
-    <p class="text-bottom">Showing page 1 of 1</p>
+    <div class="text-bottom">
+     Showing page 1 of 1
+    </div>
   {% endif %}
 </div>
 {% endblock %}
+
