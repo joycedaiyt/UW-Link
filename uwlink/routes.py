@@ -3,7 +3,7 @@ from datetime import datetime
 from flask import Blueprint, jsonify, request, render_template, flash, redirect, url_for
 from flask_login import UserMixin, current_user, login_required, login_user, logout_user
 from mongoengine.errors import DoesNotExist
-from uwlink import login_manager
+from uwlink import login_manager, db
 from uwlink.forms import EventForm, SearchForm
 from uwlink.models import User, Event, Tag
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -288,11 +288,15 @@ def join():
     event_id = request.form.get("event_id")
     event = Event.objects.get(id=event_id)
     user = User.objects.get(id=current_user.id)
-    user.events_joined.append(str(event.id))
-    user.save()
-    event.participants.append(str(user.username))
-    event.save()
-    flash('Joined!')
+    if event.creator == user.username:
+        flash('Sorry, you cannot join an event that you created')
+    else:
+        user = User.objects.get(id=current_user.id)
+        user.events_joined.append(str(event.id))
+        user.save()
+        event.participants.append(str(user.username))
+        event.save()
+        flash('Joined!')
     return redirect(url_for('.feed'))
 
 
@@ -307,6 +311,28 @@ def leave():
     event.participants.remove(str(user.username))
     event.save()
     flash('Left!')
+    return redirect(url_for('.feed'))
+
+
+@routes.route('/delete', methods=['POST'])
+@login_required
+def delete():
+    event_id = request.form.get("event_id")
+    event = Event.objects.get(id=event_id)
+    user = User.objects.get(id=current_user.id)
+    user.events_created.remove(str(event.id))
+    user.save()
+    for participant_name in event.participants:
+        participant = User.objects.get(username=participant_name)
+        participant.events_joined.remove(str(event_id))
+        participant.save()
+    for tag_name in event.tags:
+        tag = Tag.objects.get(name=tag_name)
+        tag.events.remove(str(event_id))
+        tag.save()
+    event.save()
+    event.delete()
+    flash('Deleted!')
     return redirect(url_for('.feed'))
 
 
