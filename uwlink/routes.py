@@ -123,12 +123,11 @@ def feed():
     page = request.args.get('page', 1, type=int)
     pagination = Event.objects.order_by('-created_at').paginate(page=page, per_page=8)
     return render_template('feed.html', pagination=pagination,
-                            results=False, user=User.objects.get(id=current_user.id))
+                            user=User.objects.get(id=current_user.id))
 
 
 # search events
 @routes.route('/search', methods=['GET', 'POST'])
-@login_required
 def search():
     form = SearchForm()
     if form.validate_on_submit():
@@ -246,7 +245,6 @@ def result(data):
 
 
 @routes.route('/profile/<username>', methods=['GET'])
-@login_required
 def profile(username):
     user = User.objects.get(username=username)
     events_created = []

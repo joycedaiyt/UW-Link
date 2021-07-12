@@ -5,17 +5,13 @@
 
 {% block page_content %}
 <div class="page-header">
-  {% if results %}
-    <h1>Search Results</h1>
-  {% else %}
-    <h1>Events</h1>
-    <button>
-      <a href="{{ url_for('api.create') }}">Create an Event</a>
-    </button>
-    <button>
-      <a href="{{ url_for('api.search') }}">Search</a>
-    </button>
-  {% endif %}
+  <h1>Events</h1>
+  <button>
+    <a href="{{ url_for('api.create') }}">Create an Event</a>
+  </button>
+  <button>
+    <a href="{{ url_for('api.search') }}">Search</a>
+  </button>
 </div>
 
 <div class="feed">
