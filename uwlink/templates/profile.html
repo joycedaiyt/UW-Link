@@ -1,4 +1,8 @@
 {% extends "base.html" %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='profile.css') }}">
+{% endblock %}
 {% block content %}
     <div class="content-section">
       <div class="media">
@@ -10,24 +14,78 @@
         <form method="POST" action="" enctype="multipart/form-data">
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">Account Info</legend>
-                <div class = "events_created"> 
-                  <div class = "title"> 
-                    <h4> Events Created</h4>
+               <div class="events_info">
+                <h2 class="title">Events Created</h2>
+                {% for event in events_created %}
+                  <div class="card">
+                    <h2 class="name">
+                      {{event.name}}
+                    </h2>
+                    <p class="description">
+                      {{event.description}}
+                    </p>
+                    <div class="line">
+                      <div class="time">
+                        Time: {{event.time.strftime('%Y-%m-%d %H:%M')}}
+                      </div>
+                      <div class="creator">
+                        Created by: 
+                        <a href="{{ url_for('api.profile', username=event.creator) }}">{{event.creator}}</a>
+                      </div>
+                    </div>
+                    <div class="participants">
+                      {% if event.participants|length > 0 %}
+                        Participants:
+                        {% for participant in event.participants %}
+                          <a href="{{ url_for('api.profile', username=participant) }}">{{participant}}</a>
+                        {% endfor %}
+                      {% else %}
+                        No participants. Be the first to join this event!
+                      {% endif %}
+                    </div>
+                    {% set event_id = event.id|string() %}
+                    <form action="{{ url_for('api.delete') }}" method="post">
+                      <input type="hidden" name="event_id" value={{ event_id|safe }}>
+                      <input style="background-image: linear-gradient(to left, #e97777, #ceacb4);" class="btn" type="submit" name="form_data" value="Delete">
+                    </form>
                   </div>
-                  {% for event in events_created %}
-                  <div>
-                    {{event.name}}
-                  </div>
-                  {% endfor %}
-                </div>
-              <div class = "events_joined"> 
-                <div class = "title"> 
-                  <h4> Events Joined</h4>
-                </div>
+                {% endfor %}
+              </div>
+              <div class="events_info">
+                <h2 class="title">Events Joined</h2>
                 {% for event in events_joined %}
-                <div>
-                  {{event.name}}
-                </div>
+                  <div class="card">
+                    <h2 class="name">
+                      {{event.name}}
+                    </h2>
+                    <p class="description">
+                      {{event.description}}
+                    </p>
+                    <div class="line">
+                      <div class="time">
+                        Time: {{event.time.strftime('%Y-%m-%d %H:%M')}}
+                      </div>
+                      <div class="creator">
+                        Created by: 
+                        <a href="{{ url_for('api.profile', username=event.creator) }}">{{event.creator}}</a>
+                      </div>
+                    </div>
+                    <div class="participants">
+                      {% if event.participants|length > 0 %}
+                        Participants:
+                        {% for participant in event.participants %}
+                          <a href="{{ url_for('api.profile', username=participant) }}">{{participant}}</a>
+                        {% endfor %}
+                      {% else %}
+                        No participants. Be the first to join this event!
+                      {% endif %}
+                    </div>
+                    {% set event_id = event.id|string() %}
+                    <form action="{{ url_for('api.delete') }}" method="post">
+                      <input type="hidden" name="event_id" value={{ event_id|safe }}>
+                      <input style="background-image: linear-gradient(to left, #e97777, #ceacb4);" class="btn" type="submit" name="form_data" value="Delete">
+                    </form>
+                  </div>
                 {% endfor %}
               </div>
             </fieldset>
