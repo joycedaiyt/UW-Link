@@ -2,6 +2,15 @@
 {% block head %}
 {{ super() }}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='profile.css') }}">
+<style>
+body  {
+  background-image: url('/static/acount-background.jpeg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  background-size: 100% 100%;
+}
+</style>
 {% endblock %}
 {% block content %}
     <div class="content-section">
