@@ -118,12 +118,14 @@ def create():
 
 
 @routes.route('/feed/', methods=['GET'])
-@login_required
 def feed():
     page = request.args.get('page', 1, type=int)
     pagination = Event.objects.order_by('-created_at').paginate(page=page, per_page=8)
-    return render_template('feed.html', pagination=pagination,
-                            user=User.objects.get(id=current_user.id))
+    if current_user.is_authenticated:
+        user = User.objects.get(id=current_user.id)
+        return render_template('feed.html', pagination=pagination,
+                                user=User.objects.get(id=current_user.id))
+    return render_template('feed.html', pagination=pagination, user=None)
 
 
 # search events
@@ -146,7 +148,6 @@ events_per_page = 8
 
 # display search results for the given data      
 @routes.route('/result/<data>/', methods=['GET'])
-@login_required
 def result(data):
     content = data.strip('][').split(', ')
     fields = [None] * len(content)
@@ -231,8 +232,12 @@ def result(data):
     event_list.reverse()
     page = request.args.get('page', 1, type=int)
     if len(event_list) == 0:
-        return render_template('result.html', event_list=event_list, page=page,
-                                page_count=0, data=data, user=User.objects.get(id=current_user.id))
+        if current_user.is_authenticated:
+            return render_template('result.html', event_list=event_list, page=page,
+                                    page_count=0, data=data, user=User.objects.get(id=current_user.id))
+        else:
+            return render_template('result.html', event_list=event_list, page=page,
+                                    page_count=0, data=data, user=None)
     pages = []
     idx = 0
     for i in range(0, len(event_list), events_per_page):
@@ -240,8 +245,12 @@ def result(data):
         pages[idx].sort(key=lambda event: event.time, reverse=True)
         idx += 1
     page_count = len(pages)
-    return render_template('result.html', event_list=pages[page - 1], page=page,
-                            page_count=page_count, data=data, user=User.objects.get(id=current_user.id))
+    if current_user.is_authenticated:
+        return render_template('result.html', event_list=pages[page - 1], page=page,
+                                page_count=page_count, data=data, user=User.objects.get(id=current_user.id))
+    else:
+        return render_template('result.html', event_list=pages[page - 1], page=page, 
+                                page_count=page_count, data=data, user=None)
 
 
 @routes.route('/profile/<username>', methods=['GET'])
