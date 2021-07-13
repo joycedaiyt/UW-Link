@@ -264,20 +264,44 @@ def profile(username):
     for event_id in user.events_joined:
         event = Event.objects.get(id=event_id)
         events_joined.append(event)
+    page = request.args.get('page', 1, type=int)
+    created_pages = []
+    c_idx = 0
+    for i in range(0, len(events_created), 4):
+        created_pages.append(events_created[i:i+4])
+        c_idx += 1
+    created_page = []
+    if page <= len(created_pages):
+        created_page = created_pages[page - 1]
+    joined_pages = []
+    j_idx = 0
+    for i in range(0, len(events_joined), 4):
+        joined_pages.append(events_joined[i:i+4])
+        j_idx += 1
+    joined_page = []
+    if page <= len(joined_pages):
+        joined_page = joined_pages[page - 1]
+    page_count = max(len(joined_pages), len(created_pages))
     if current_user.is_authenticated:
         return render_template('profile.html', name = user.username,
-                           email = user.email,
-                           join = user.joined_at,
-                           events_created = events_created,
-                           events_joined = events_joined,
-                           user = User.objects.get(id=current_user.id))
+                                email = user.email,
+                                join = user.joined_at,
+                                events_created = created_page,
+                                events_joined = joined_page,
+                                user = User.objects.get(id=current_user.id),
+                                page_count = page_count,
+                                page = page,
+                                account = False)
     else:
         return render_template('profile.html', name = user.username,
-                           email = user.email,
-                           join = user.joined_at,
-                           events_created = events_created,
-                           events_joined = events_joined,
-                           user = None)
+                                email = user.email,
+                                join = user.joined_at,
+                                events_created = created_page,
+                                events_joined = joined_page,
+                                user = None,
+                                page_count = page_count,
+                                page = page,
+                                account = False)
 
 
 @routes.route('/account', methods=['GET'])
@@ -291,12 +315,33 @@ def account():
     for event_id in current_user.user.events_joined:
         event = Event.objects.get(id = event_id)
         events_joined.append(event)
+    page = request.args.get('page', 1, type=int)
+    created_pages = []
+    c_idx = 0
+    for i in range(0, len(events_created), 4):
+        created_pages.append(events_created[i:i+4])
+        c_idx += 1
+    created_page = []
+    if page <= len(created_pages):
+        created_page = created_pages[page - 1]
+    joined_pages = []
+    j_idx = 0
+    for i in range(0, len(events_joined), 4):
+        joined_pages.append(events_joined[i:i+4])
+        j_idx += 1
+    joined_page = []
+    if page <= len(joined_pages):
+        joined_page = joined_pages[page - 1]
+    page_count = max(len(joined_pages), len(created_pages))
     return render_template('profile.html', name = current_user.user.username,
-                           email = current_user.user.email,
-                           join = current_user.user.joined_at,
-                           events_created = events_created,
-                           events_joined = events_joined,
-                           user = User.objects.get(id=current_user.id))
+                            email = current_user.user.email,
+                            join = current_user.user.joined_at,
+                            events_created = created_page,
+                            events_joined = joined_page,
+                            page_count = page_count,
+                            page = page,
+                            user = User.objects.get(id=current_user.id),
+                            account = True)
 
 
 @routes.route('/join', methods=['POST'])
