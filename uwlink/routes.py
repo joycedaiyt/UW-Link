@@ -264,11 +264,20 @@ def profile(username):
     for event_id in user.events_joined:
         event = Event.objects.get(id=event_id)
         events_joined.append(event)
-    return render_template('profile.html', name = user.username,
+    if current_user.is_authenticated:
+        return render_template('profile.html', name = user.username,
                            email = user.email,
                            join = user.joined_at,
                            events_created = events_created,
-                           events_joined = events_joined)
+                           events_joined = events_joined,
+                           user = User.objects.get(id=current_user.id))
+    else:
+        return render_template('profile.html', name = user.username,
+                           email = user.email,
+                           join = user.joined_at,
+                           events_created = events_created,
+                           events_joined = events_joined,
+                           user = None)
 
 
 @routes.route('/account', methods=['GET'])
@@ -286,7 +295,8 @@ def account():
                            email = current_user.user.email,
                            join = current_user.user.joined_at,
                            events_created = events_created,
-                           events_joined = events_joined)
+                           events_joined = events_joined,
+                           user = User.objects.get(id=current_user.id))
 
 
 @routes.route('/join', methods=['POST'])
