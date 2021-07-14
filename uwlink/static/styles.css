@@ -113,8 +113,10 @@ div.flask-pagedown-preview h3 {
     border-bottom: 1px solid #e0e0e0;
 }
 
-.page-bottom {
-    text-align: right;
+.align-right {
+    float: right;
+    width: 30%;
+    text-align: center;
 }
 .pagination {
   display: inline-block;
@@ -151,7 +153,20 @@ div.flask-pagedown-preview h3 {
 
 .text-bottom{
     position: relative;
-    right: 8%;
 }
 
+.navbar {
+    background-color: #061722;
+    font-family: Raleway;
+    border-radius: 0% !important;
+    border-color: transparent !important;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    color: white !important;
+}
+
+.navbar-inverse .navbar-brand {
+    color: white !important;
+}
 

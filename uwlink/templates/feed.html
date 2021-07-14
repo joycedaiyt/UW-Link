@@ -10,15 +10,15 @@
 
 {% block page_content %}
 <div class="page-header">
-  <h1 >Events</h1>
+  <h1>Events</h1>
   {% if user %}
-    <div class="button">
-      <a class="butn" href="{{ url_for('api.create') }}">Create an Event</a>
-    </div>
+  <div class="button">
+    <a class="butn" href="{{ url_for('api.create') }}">Create an Event</a>
+  </div>
   {% else %}
-    <div class="button">
-      <a class="butn" href="{{ url_for('api.login') }}">Create an Event</a>
-    </div>
+  <div class="button">
+    <a class="butn" href="{{ url_for('api.login') }}">Create an Event</a>
+  </div>
   {% endif %}
   <div class="button">
     <a class="butn" href="{{ url_for('api.search') }}">Search</a>
@@ -27,84 +27,116 @@
 
 <div class="feed">
   {% for event in pagination.items[::1] %}
-    <div class="event-card">
-      <h2 class="name">
-        {{event.name}}
-      </h2>
-      <p class="description">
-        {{event.description}}
-      </p>
-      <div class="line">
-        <div class="time"><b>Time: </b>{{event.time.strftime('%Y-%m-%d %H:%M')}}
-        </div>
-        <div class="creator">
-          <b>Created by: </b>
-          <a href="{{ url_for('api.profile', username=event.creator) }}">{{event.creator}}</a>
-        </div>
+  <div class="event-card">
+    <h2 class="name">
+      {{event.name}}
+    </h2>
+    <p class="description">
+      {{event.description}}
+    </p>
+    <div class="line">
+      <div class="time"><b>Time: </b>{{event.time.strftime('%Y-%m-%d %H:%M')}}
       </div>
-      <div class="participants">
-        {% if event.participants|length > 0 %}
-          <b>Participants: </b>
-          {% for participant in event.participants %}
-            <a href="{{ url_for('api.profile', username=participant) }}">{{participant}}</a>
-          {% endfor %}
-        {% else %}
-          No participants. Be the first to join this event!
-        {% endif %}
+      <div class="creator">
+        <b>Created by: </b>
+        <a href="{{ url_for('api.profile', username=event.creator) }}">{{event.creator}}</a>
       </div>
-      {% set event_id = event.id|string() %}
-      {% if user %}
-        {% if event_id in user.events_created %}
-          <form action="{{ url_for('api.delete') }}" method="post">
-            <input type="hidden" name="event_id" value={{ event_id|safe }}>
-            <input style="background-image: linear-gradient(to right, #757F9A 50%, #B0C4DE);" class="btn" type="submit" name="form_data" value="Delete">
-          </form>
-        {% elif event_id not in user.events_joined %}
-          <form action="{{ url_for('api.join') }}" method="post">
-            <input type="hidden" name="event_id" value={{ event_id|safe }}>
-            <input class="btn" type="submit" name="form_data" value="&nbsp Join &nbsp">
-          </form>
-        {% else %}
-          <form action="{{ url_for('api.leave') }}" method="post">
-            <input type="hidden" name="event_id" value={{ event_id|safe }}>
-            <input style="background-image: linear-gradient(to left, #77A1D3, #79CBCA);" class="btn" type="submit" name="form_data" value="&#8201 Leave">
-          </form>
-        {% endif %}
+    </div>
+    <div class="participants">
+      {% if event.participants|length > 0 %}
+      <b>Participants: </b>
+      {% for participant in event.participants %}
+      <a href="{{ url_for('api.profile', username=participant) }}">{{participant}}</a>
+      {% endfor %}
       {% else %}
-        <form action="{{ url_for('api.login') }}" method="post">
-          <input type="hidden" name="event_id" value={{ event_id|safe }}>
-          <input class="btn" type="submit" name="form_data" value="&nbsp Join &nbsp">
-        </form>
+      No participants. Be the first to join this event!
       {% endif %}
     </div>
+    <button class="open-button" onclick="openDetails('{{event.name}}', '{{event.description}}')">See More</button>
+    {% set event_id = event.id|string() %}
+    {% if user %}
+    {% if event_id in user.events_created %}
+    <form action="{{ url_for('api.delete') }}" method="post">
+      <input type="hidden" name="event_id" value={{ event_id|safe }}>
+      <input style="background-image: linear-gradient(to right, #757F9A 50%, #B0C4DE);" class="btn" type="submit"
+        name="form_data" value="Delete">
+    </form>
+    {% elif event_id not in user.events_joined %}
+    <form action="{{ url_for('api.join') }}" method="post">
+      <input type="hidden" name="event_id" value={{ event_id|safe }}>
+      <input class="btn" type="submit" name="form_data" value="&nbsp Join &nbsp">
+    </form>
+    {% else %}
+    <form action="{{ url_for('api.leave') }}" method="post">
+      <input type="hidden" name="event_id" value={{ event_id|safe }}>
+      <input style="background-image: linear-gradient(to left, #77A1D3, #79CBCA);" class="btn" type="submit"
+        name="form_data" value="&#8201 Leave">
+    </form>
+    {% endif %}
+    {% else %}
+    <form action="{{ url_for('api.login') }}" method="post">
+      <input type="hidden" name="event_id" value={{ event_id|safe }}>
+      <input class="btn" type="submit" name="form_data" value="&nbsp Join &nbsp">
+    </form>
+    {% endif %}
+  </div>
   {% endfor %}
 </div>
-<div class="page-bottom">
-  <ul class="pagination">
-    {% if not pagination.has_prev %}
-      <li><a class="page-no-link disabled" href="#/" >&laquo;</a></li>
+<div class="page-bottom" style="font-family: Raleway;">
+  <div class="align-right">
+    <ul class="pagination">
+      {% if not pagination.has_prev %}
+      <li><a class="page-no-link disabled" href="#/">&laquo;</a></li>
       {% else %}
-        <li><a href="{{url_for('api.feed', page=pagination.prev_num) }}">&laquo;</a></li>
-    {% endif %}
-    {% for page_num in pagination.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+      <li><a href="{{url_for('api.feed', page=pagination.prev_num) }}">&laquo;</a></li>
+      {% endif %}
+      {% for page_num in pagination.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
       {% if page_num %}
-        {% if page_num != pagination.page %}
-          <li><a href="{{url_for('api.feed', page=page_num) }}">{{ page_num }} </a></li>
-        {% else %}
-          <li class="active"><a href="{{url_for('api.feed', page=page_num) }}">{{ page_num }} </a></li>
-        {% endif %}
+      {% if page_num != pagination.page %}
+      <li><a href="{{url_for('api.feed', page=page_num) }}">{{ page_num }} </a></li>
       {% else %}
-        <li><a class="ellipsis">…</a></li>
+      <li class="active"><a href="{{url_for('api.feed', page=page_num) }}">{{ page_num }} </a></li>
       {% endif %}
-    {% endfor %} 
+      {% else %}
+      <li><a class="ellipsis">…</a></li>
+      {% endif %}
+      {% endfor %}
       {% if not pagination.has_next %}
-        <li><a class="page-no-link disabled" href="#/" >&raquo;</a></li>
-        {% else %}
-          <li><a href="{{url_for('api.feed', page=pagination.next_num) }}">&raquo;</a></li>
+      <li><a class="page-no-link disabled" href="#/">&raquo;</a></li>
+      {% else %}
+      <li><a href="{{url_for('api.feed', page=pagination.next_num) }}">&raquo;</a></li>
       {% endif %}
-  </ul>
-  <div class="text-bottom">
-    Showing page {{ pagination.page }} of {{ pagination.pages }}
+    </ul>
+    <div class="text-bottom">
+      Showing page {{ pagination.page }} of {{ pagination.pages }}
+    </div>
   </div>
 </div>
+
+<div class="details" id="details">
+  <div class="event-card" style="height: 60vh; width: 60vw;">
+    <h2 id="details-name">
+    </h2>
+    <p id="details-desc">
+    </p>
+    <button type="button" class="close-button btn" onclick="closeDetails()">Close</button>
+  </div>
+</div>
+
+<script>
+  function openDetails(name, desc) {
+    document.getElementById("details").style.opacity = "1";
+    document.getElementById("details").style.visibility = "visible";
+    $('.feed').addClass('dim');
+
+    document.getElementById("details-name").innerHTML = name;
+    document.getElementById("details-desc").innerHTML = desc;
+  }
+
+  function closeDetails() {
+    document.getElementById("details").style.opacity = "0";
+    document.getElementById("details").style.visibility = "hidden";
+    $('.feed').removeClass('dim');
+  }
+</script>
 {% endblock %}

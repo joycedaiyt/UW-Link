@@ -49,6 +49,7 @@ h1 {
   place-items: center;
   display: grid;
   grid-template-columns: 50% 50%;
+  transition: all 0.6s ease;  
 }
 
 .name {
@@ -68,11 +69,6 @@ h1 {
   overflow: hidden;
   position: relative;
   width: calc(100% - 60px);
-}
-
-p {
-  word-break: break-all;
-  white-space: normal;
 }
 
 .line {
@@ -111,3 +107,58 @@ p {
 }
 
 
+.name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.description {
+  height: 15%;
+  max-height: 15%;
+  overflow: hidden;
+  word-break: break-all;
+  white-space: normal;
+}
+
+.details {
+  visibility: hidden;
+  opacity: 0;
+  position: fixed;
+  bottom: calc(20vh - 30px);
+  right: calc(20vw - 30px);
+  z-index: 9;
+  transition: all 0.3s ease;
+}
+
+.stop-scrolling {
+  height: 100%;
+  overflow: hidden;
+}
+
+.stop-scrolling {
+  height: 100%;
+  overflow: hidden;
+}
+
+.dim {
+  opacity:0.5;
+}
+
+.close-button {
+  float: right;
+}
+
+#details-name {
+  word-break: break-all;
+  white-space: normal;
+  margin-bottom: 20px;
+}
+
+.open-button {
+  float: right;
+  border: hidden;
+  padding: 5px;
+  border-radius: 15%;
+  background-color: #dae6f2;
+}
