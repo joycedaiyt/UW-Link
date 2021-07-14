@@ -55,8 +55,10 @@ def signup():
                     joined_at=datetime.now(),
                     hashed_password=generate_password_hash(form.get("signupPassword")))
         user.save()
+        user = LoginUser(user)
+        login_user(user)
         flash('You have been signed up!')
-        return redirect(url_for('.login'))
+        return redirect(url_for('.feed'))
     return render_template('login.html', form=form)
 
 

@@ -70,6 +70,11 @@ h1 {
   width: calc(100% - 60px);
 }
 
+p {
+  word-break: break-all;
+  white-space: normal;
+}
+
 .line {
   display: grid;
   grid-template-columns: 50% 50%;
