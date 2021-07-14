@@ -11,6 +11,7 @@
 }
 
 .card {
+  font-family: Raleway;
   margin: 30px;
   padding: 30px;
   background-color: var(--white);

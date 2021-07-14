@@ -1,21 +1,47 @@
 @import url("https://fonts.googleapis.com/css?family=Raleway&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Balsamiq+Sans&family=swap");
 @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Montserrat:b");
 :root {
   --white: #e9e9e9;
-  --gray: #333;
-  --black: #000000;
+  --blue: #008CBA;
   --blue-r: #315a7491;
-  --lightblue: #0393a3;
-  --gold: #ffd700;
-  --goldenrod: #daa520;
-  --darkgoldenrod: #b8860b;
+  --lightblue: #4682B4;
+  --navy:  #000080;
   --lightyellow: #fafad2;
   --button-radius: 0.8rem;
   --max-width: 700px;
   --max-height: 390px;
   font-size: 16px;
   font-family: Raleway, Balsamiq Sans, Permanent Marker;
+}
+
+h1 {
+  font-weight: bold;
+  font-size: 45px;
+  font-family: Montserrat;
+  margin-top: -3%;
+  margin-bottom: 2%;
+}
+
+.button {
+  display: inline-block;
+  border: none
+}
+
+.butn {
+  color: white;
+  background-color: var(--blue); 
+  padding: 10px 20px;
+  text-decoration: none;
+  border: none;
+}
+
+.butn:hover {
+  background-color: white;
+  color: var(--blue);
+  border: none
 }
 
 .feed {
@@ -32,6 +58,7 @@
 }
 
 .event-card {
+  font-family: Raleway;
   margin: 30px;
   padding: 30px;
   background-color: var(--white);
@@ -49,7 +76,7 @@
 }
 
 .feed .btn {
-  background-image: linear-gradient(to left, #e66465, #9198e5);
+  background-image: linear-gradient(to right, #1A2980, #26D0CE);
   border-radius: 20px;
   border: 0.2px solid var(--blue-r);
   color: var(--white);
@@ -60,9 +87,9 @@
   padding: 0.9rem 4rem;
   text-transform: uppercase;
   transition: transform 80ms ease-in;
-  margin-top: 1.5rem;
-
+  margin-top: 20%;
   position: absolute;
+  margin-left: 25%;
   bottom: 30px;
 }
 
@@ -72,6 +99,10 @@
 
 .feed .btn:focus {
   outline: none;
+}
+
+.disabled {
+  text-decoration: none;
 }
 
 

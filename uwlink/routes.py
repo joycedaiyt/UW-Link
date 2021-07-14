@@ -253,7 +253,7 @@ def result(data):
                                 page_count=page_count, data=data, user=None)
 
 
-@routes.route('/profile/<username>', methods=['GET'])
+@routes.route('/profile/<username>', methods=['GET', 'POST'])
 def profile(username):
     user = User.objects.get(username=username)
     events_created = []
@@ -304,7 +304,7 @@ def profile(username):
                                 account = False)
 
 
-@routes.route('/account', methods=['GET'])
+@routes.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
     events_created = []

@@ -5,13 +5,19 @@
 
 {% block page_content %}
 <div class="page-header">
-  <h1>Search Results</h1>
-  <button>
-    <a href="{{ url_for('api.create') }}">Create an Event</a>
-  </button>
-  <button>
-    <a href="{{ url_for('api.search') }}">Search</a>
-  </button>
+  <h1 >Search Results</h1>
+  {% if user %}
+    <div class="button">
+      <a class="butn" href="{{ url_for('api.create') }}">Create an Event</a>
+    </div>
+  {% else %}
+    <div class="button">
+      <a class="butn" href="{{ url_for('api.login') }}">Create an Event</a>
+    </div>
+  {% endif %}
+  <div class="button">
+    <a class="butn" href="{{ url_for('api.search') }}">Search</a>
+  </div>
 </div>
 
 <div class="feed">
@@ -25,16 +31,17 @@
       </p>
       <div class="line">
         <div class="time">
-          Time: {{event.time.strftime('%Y-%m-%d %H:%M')}}
+          <b>Time: </b>
+          {{event.time.strftime('%Y-%m-%d %H:%M')}}
         </div>
         <div class="creator">
-          Created by: 
+          <b>Created by: </b>
           <a href="{{ url_for('api.profile', username=event.creator) }}">{{event.creator}}</a>
         </div>
       </div>
       <div class="participants">
         {% if event.participants|length > 0 %}
-          Participants:
+          <b>Participants: </b>
           {% for participant in event.participants %}
             <a href="{{ url_for('api.profile', username=participant) }}">{{participant}}</a>
           {% endfor %}
@@ -47,23 +54,23 @@
         {% if event_id in user.events_created %}
           <form action="{{ url_for('api.delete') }}" method="post">
             <input type="hidden" name="event_id" value={{ event_id|safe }}>
-            <input class="btn" type="submit" name="form_data" value="Delete">
+            <input style="background-image: linear-gradient(to right, #757F9A 50%, #B0C4DE);" class="btn" type="submit" name="form_data" value="Delete">
           </form>
         {% elif event_id not in user.events_joined %}
           <form action="{{ url_for('api.join') }}" method="post">
             <input type="hidden" name="event_id" value={{ event_id|safe }}>
-            <input class="btn" type="submit" name="form_data" value="Join">
+            <input class="btn" type="submit" name="form_data" value="&nbsp Join &nbsp">
           </form>
         {% else %}
           <form action="{{ url_for('api.leave') }}" method="post">
             <input type="hidden" name="event_id" value={{ event_id|safe }}>
-            <input style="background-image: linear-gradient(to left, #e97777, #ceacb4);" class="btn" type="submit" name="form_data" value="Leave">
+            <input style="background-image: linear-gradient(to left, #77A1D3, #79CBCA);" class="btn" type="submit" name="form_data" value="&#8201 Leave">
           </form>
         {% endif %}
       {% else %}
         <form action="{{ url_for('api.login') }}" method="post">
           <input type="hidden" name="event_id" value={{ event_id|safe }}>
-          <input class="btn" type="submit" name="form_data" value="Join">
+          <input class="btn" type="submit" name="form_data" value="&nbsp Join &nbsp">
         </form>
       {% endif %}
     </div>
