@@ -52,12 +52,6 @@ h1 {
   transition: all 0.6s ease;  
 }
 
-.name {
-  font-weight: bold;
-  margin: 0;
-  margin-bottom: 1.25rem;
-}
-
 .event-card {
   font-family: Raleway;
   margin: 30px;
@@ -106,19 +100,24 @@ h1 {
   text-decoration: none;
 }
 
-
 .name {
+  font-weight: bold;
+  margin: 0;
+  margin-bottom: 1.25rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-height: 1.5em;
+  min-height: 1.5em;
+  line-height: 1.5em;
 }
 
 .description {
-  height: 15%;
-  max-height: 15%;
+  text-overflow: ellipsis;
   overflow: hidden;
-  word-break: break-all;
-  white-space: normal;
+  max-height: 3.0em;
+  min-height: 3.0em;
+  line-height: 1.5em;
 }
 
 .details {
@@ -146,12 +145,28 @@ h1 {
 }
 
 .close-button {
-  float: right;
+  bottom: 30px;
+  right: 30px;
+  position: absolute;
 }
 
 #details-name {
-  word-break: break-all;
-  white-space: normal;
+  text-align: center;
+  font-weight: bold;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  margin-bottom: 20px;
+}
+
+#details-desc {
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
   margin-bottom: 20px;
 }
 
@@ -161,4 +176,16 @@ h1 {
   padding: 5px;
   border-radius: 15%;
   background-color: #dae6f2;
+}
+
+.participant {
+  background-color: #dddddd;
+  border-radius: 10%;
+  padding: 3px;
+}
+
+.creator-link {
+  background-color: #dddddd;
+  border-radius: 10%;
+  padding: 3px;
 }
