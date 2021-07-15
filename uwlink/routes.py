@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from flask import Blueprint, jsonify, request, render_template, flash, redirect, url_for
 from flask_login import UserMixin, current_user, login_required, login_user, logout_user
@@ -96,6 +96,12 @@ def create():
         for word in content.split():
             if word not in tags:
                 tags.append(word)
+        length = len(list(Event.objects))
+        lastEvent = Event.objects[length - 1]
+        curtime = datetime.now()
+        if curtime < lastEvent.created_at:
+            print("reached")
+            curtime = lastEvent.created_at + timedelta(seconds=1)
         event = Event(
             name=form.name.data,
             description=form.description.data,
@@ -103,7 +109,7 @@ def create():
             time=time,
             creator=user.username,
             participants=[],
-            created_at=datetime.now())
+            created_at=curtime)
         event.save()
         user.events_created.append(str(event.id))
         user.save()
@@ -119,7 +125,7 @@ def create():
     return render_template('create.html', form=form)
 
 
-@routes.route('/feed/', methods=['GET'])
+@routes.route('/', methods=['GET'])
 def feed():
     page = request.args.get('page', 1, type=int)
     pagination = Event.objects.order_by('-created_at').paginate(page=page, per_page=8)

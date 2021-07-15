@@ -26,7 +26,7 @@
 </div>
 
 <div class="feed">
-  {% for event in pagination.items[::1] %}
+  {% for event in pagination.items %}
   <div class="event-card">
     <h2 class="name">
       {{event.name}}
