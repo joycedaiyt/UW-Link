@@ -100,7 +100,6 @@ def create():
         lastEvent = Event.objects[length - 1]
         curtime = datetime.now()
         if curtime < lastEvent.created_at:
-            print("reached")
             curtime = lastEvent.created_at + timedelta(seconds=1)
         event = Event(
             name=form.name.data,
