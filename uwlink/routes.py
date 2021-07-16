@@ -420,7 +420,17 @@ def update():
     form2 = UpdatePassword()
     if form1.submit1.data and form1.validate_on_submit():
         user = User.objects.get(id=current_user.id)
-        user.username = form1.username.data
+        if form1.username.data != user.username:
+            oldname = user.username
+            user.username = form1.username.data
+            for event_id in user.events_created:
+                event = Event.objects.get(id=event_id)
+                event.creator = user.username
+                event.save()
+            for event_id in user.events_joined:
+                event = Event.objects.get(id=event_id)
+                event.participants = [user.username if name == oldname else name for name in event.participants]
+                event.save()
         user.email = form1.email.data
         user.save()
         flash('Your account has been updated')
@@ -442,8 +452,3 @@ def update():
     form1.username.data = user.username
     form1.email.data = user.email
     return render_template('update.html', form1=form1, form2=form2)
-
-
-
-
-
