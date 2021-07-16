@@ -52,4 +52,23 @@
 
 .title {
   text-align: center;
+  color: white;
+  font-family: Montserrat;
+  font-weight: bold;
+}
+
+h1 {
+  font-weight: bold;
+  font-size: 45px;
+  font-family: Montserrat;
+  margin-top: 30px;
+  margin-bottom: 2%;
+  color: white;
+}
+
+.text-secondary {
+  color: white;
+  text-align: center;
+  font-size: 15px;
+  font-family: Montserrat;
 }

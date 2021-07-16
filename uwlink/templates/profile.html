@@ -16,12 +16,12 @@ body  {
 <div class="content-section">
   <div class="media">
     <div class="media-body">
-      <h2 class="account-heading">{{ name }}</h2>
-      <p class="text-secondary">{{ email }}</p >
+      <h1 class="account-heading">{{ name }}</h1>
+      <p class="text-secondary">{{ email }}</p>
+      <legend class = "text-secondary"> </legend>
     </div>
   </div>
   <fieldset class="form-group">
-    <legend class="border-bottom mb-4">Account Info</legend>
     <div class="events_info">
       <h2 class="title">Events Created</h2>
       {% for event in events_created %}
