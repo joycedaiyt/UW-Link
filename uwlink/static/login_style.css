@@ -30,7 +30,6 @@ body {
 	background-repeat: no-repeat;
 	background-size: cover;
 	display: grid;
-	height: 100vh;
 	place-items: center;
 	background-image: url("login-background.jpg");
 }
@@ -54,8 +53,8 @@ body {
 	height: var(--max-height);
 	max-width: var(--max-width);
 	overflow: hidden;
-	position: relative;
-	top: 12%;
+	position: absolute;
+	top: calc(50% - 195px);
 	width: 100%;
 }
 
@@ -209,6 +208,6 @@ body {
 	color: var(--white);
 	font-size: 25px;
 	font-weight: bold;
-	position: relative;
-	margin-top: -10%;
+	position: absolute;
+	bottom: 50px;
 }
