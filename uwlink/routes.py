@@ -272,6 +272,8 @@ def profile(username):
     for event_id in user.events_joined:
         event = Event.objects.get(id=event_id)
         events_joined.append(event)
+    events_created.reverse()
+    events_joined.reverse()
     page = request.args.get('page', 1, type=int)
     created_pages = []
     c_idx = 0
@@ -323,6 +325,8 @@ def account():
     for event_id in current_user.user.events_joined:
         event = Event.objects.get(id = event_id)
         events_joined.append(event)
+    events_created.reverse()
+    events_joined.reverse()
     page = request.args.get('page', 1, type=int)
     created_pages = []
     c_idx = 0
