@@ -36,6 +36,7 @@ h1 {
   padding: 10px 20px;
   text-decoration: none;
   border: none;
+  border-radius: 3.5px;
 }
 
 .butn:hover {

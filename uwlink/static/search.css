@@ -1,0 +1,23 @@
+.col-md-4 {
+  width: 60%;
+  margin-left: 20%;
+  margin-right: 20%;
+  border: 3px solid var(--blue);
+  border-radius: 7px;
+  background-color: white;
+  padding: 0px 20px 20px;
+}
+
+.btn {
+  color: white;
+  background-color: var(--blue); 
+  padding: 10px 20px;
+  text-decoration: none;
+  border: none;
+}
+
+.btn:hover {
+  background-color: #F0F8FF;
+  color: var(--blue);
+  border: none
+}

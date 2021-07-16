@@ -3,11 +3,25 @@
 
 {% block title %}Search Events{% endblock %}
 
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='search.css') }}">
+<style>
+body  {
+  background-image: url('/static/update-background.jpeg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  background-size: 100% 100%;
+}
+</style>
+{% endblock %}
+
 {% block page_content %}
-<div class="page-header">
-    <h1>Search Events</h1>
-</div>
 <div class="col-md-4">
+    <div class="page-header">
+        <h1>Search Events</h1>
+    </div>
     {{ wtf.quick_form(form) }}
 </div>
 {% endblock %}
