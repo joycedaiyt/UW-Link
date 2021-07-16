@@ -2,12 +2,26 @@
 
 {% block title %}Update Account{% endblock %}
 
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='update.css') }}">
+<style>
+body  {
+  background-image: url('/static/update-background.jpeg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  background-size: 100% 100%;
+}
+</style>
+{% endblock %}
+
 {% block page_content %}
-<div class="content-section">
+<div class="wrapper">
   <form method="POST">
       {{ form1.hidden_tag() }}
     <fieldset class="form-group">
-      <legend class="border-bottom mb-4">Account Info</legend>
+      <legend class="border-bottom mb-4"><b>Account Info</b></legend>
       <div class="form-group">
           {{ form1.username.label(class="form-control-label") }}
           {% if form1.username.errors %}
@@ -40,11 +54,11 @@
     </div>
   </form>
 </div>
-<div class="content-section">
+<div class="wrapper">
   <form method="POST">
       {{ form2.hidden_tag() }}
     <fieldset class="form-group">
-      <legend class="border-bottom mb-4">Change Password</legend>
+      <legend class="border-bottom mb-4"><b>Change Password</b></legend>
       <div class="form-group">
           {{ form2.oldpassword.label(class="form-control-label") }}
           {% if form2.oldpassword.errors %}
