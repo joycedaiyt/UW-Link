@@ -44,8 +44,7 @@ body  {
             Account <b class="caret"></b>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="https://www.google.ca">Change Password</a></li>
-            <li><a href="https://www.google.ca">Change Email</a></li>
+            <li><a href="{{ url_for('.update')}}">Update Account</a></li>
             <li><a href="{{ url_for('.logout') }}">Log Out</a></li>
           </ul>
         </li>

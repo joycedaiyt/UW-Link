@@ -4,7 +4,7 @@ from flask import Blueprint, jsonify, request, render_template, flash, redirect,
 from flask_login import UserMixin, current_user, login_required, login_user, logout_user
 from mongoengine.errors import DoesNotExist
 from uwlink import login_manager, db
-from uwlink.forms import EventForm, SearchForm
+from uwlink.forms import EventForm, SearchForm, UpdateForm, UpdatePassword
 from uwlink.models import User, Event, Tag
 from werkzeug.security import check_password_hash, generate_password_hash
 from bson.objectid import ObjectId
@@ -35,7 +35,7 @@ def user_loader(user_id):
 @routes.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = request.form
-    if request.method == 'POST':
+    if request.method == 'POST': 
         try:
             if User.objects.get(username=form.get("signupUser")):
                 flash('Username already exist')
@@ -411,3 +411,39 @@ def delete():
 def logout():
     logout_user()
     return redirect(url_for('.login'))
+
+
+@routes.route('/update', methods=['GET', 'POST'])
+@login_required
+def update():
+    form1 = UpdateForm()
+    form2 = UpdatePassword()
+    if form1.submit1.data and form1.validate_on_submit():
+        user = User.objects.get(id=current_user.id)
+        user.username = form1.username.data
+        user.email = form1.email.data
+        user.save()
+        flash('Your account has been updated')
+        return redirect(url_for('.update'))
+    if form2.submit2.data and form2.validate_on_submit():
+        user = User.objects.get(id=current_user.id)
+        if check_password_hash(user.hashed_password, form2.oldpassword.data) and form2.newpassword.data == form2.confirmpassword.data:
+            user.hashed_password = generate_password_hash(form2.newpassword.data)
+            user.save()
+            flash('Your password has been changed')
+            return redirect(url_for('.update'))
+        elif not check_password_hash(user.hashed_password, form2.oldpassword.data):
+            flash('You entered the wrong old password')
+            return redirect(url_for('.update'))
+        elif form2.newpassword.data != form2.confirmpassword.data:
+            flash('You passwords do not match')
+            return redirect(url_for('.update'))
+    user = User.objects.get(id=current_user.id)
+    form1.username.data = user.username
+    form1.email.data = user.email
+    return render_template('update.html', form1=form1, form2=form2)
+
+
+
+
+
