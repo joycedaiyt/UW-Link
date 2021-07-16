@@ -10,17 +10,6 @@
     --lightyellow: #fafad2;
 }
 
-.content-section {
-  padding: 10px 20px;
-  border: 2px solid var(--black);
-  border-radius: 3px;
-  margin-bottom: 20px;
-}
-
-.invalid-feedback {
-    color: red;
-}
-
 .profile-thumbnail {
     position: absolute;
 }
