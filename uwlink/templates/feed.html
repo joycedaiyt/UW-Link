@@ -32,7 +32,9 @@
       {{event.name}}
     </h2>
     <p class="description">
-      {{event.description}}
+      {% autoescape false %}
+        {{ event.description | replace("\n", "<br/>") }}
+      {% endautoescape %}
     </p>
     <div class="line">
       <div class="time"><b>Time: </b>{{event.time.strftime('%Y-%m-%d %H:%M')}}
@@ -52,7 +54,8 @@
       No participants. Be the first to join this event!
       {% endif %}
     </div>
-    <button class="open-button" onclick="openDetails('{{event.name}}', '{{event.description}}')">See More</button>
+    <meta id="desc-data-{{event.id|string}}" data-desc="{{event.description}}">
+    <button class="open-button" onclick="openDetails('{{event.name}}', '{{event.id|string}}')">See More</button>
     {% set event_id = event.id|string() %}
     {% if user %}
     {% if event_id in user.events_created %}
@@ -122,16 +125,17 @@
 </div>
 
 <script>
-  function openDetails(name, desc) {
+  const openDetails = (name, id) => {
     document.getElementById("details").style.opacity = "1";
     document.getElementById("details").style.visibility = "visible";
     $('.feed').addClass('dim');
+    let desc = $(`#desc-data-${id}`).data().desc;
 
     document.getElementById("details-name").innerHTML = name;
     document.getElementById("details-desc").innerHTML = desc;
   }
 
-  function closeDetails() {
+  const closeDetails = () => {
     document.getElementById("details").style.opacity = "0";
     document.getElementById("details").style.visibility = "hidden";
     $('.feed').removeClass('dim');

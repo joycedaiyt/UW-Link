@@ -168,6 +168,7 @@ h1 {
   -webkit-hyphens: auto;
   hyphens: auto;
   margin-bottom: 20px;
+  white-space: pre-wrap;
 }
 
 .open-button {
