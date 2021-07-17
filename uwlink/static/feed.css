@@ -193,3 +193,9 @@ h1 {
   width: 100%;
   overflow: scroll;
 }
+
+@media only screen and (max-width: 1000px) {
+  .feed {
+    grid-template-columns: 100%;
+  }
+}

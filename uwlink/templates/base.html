@@ -34,7 +34,7 @@ body  {
       <ul class="nav navbar-nav">
         <li><a href="{{ url_for('.feed') }}">Home</a></li>
         {% if current_user.is_authenticated %}
-        <li><a href="{{ url_for('.account') }}">Account</a></li>
+        <li><a href="{{ url_for('.account') }}">Profile</a></li>
         {% endif %}
       </ul>
       <ul class="nav navbar-nav navbar-right">
