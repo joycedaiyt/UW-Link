@@ -1,7 +1,7 @@
 # Team L - UW Link
 
 This is a project that is part of the S21 UWaterloo CSC x DSC Project Program! 
-Check out our app on http://www.uwlink.live/!
+Check out our app on http://www.uwlink.live/login!
 
 ## Overview
 
